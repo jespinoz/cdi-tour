@@ -1,6 +1,6 @@
 package com.acmebank.infrastructure.persistence;
 
-import com.acmebank.common.Profiled;
+import com.acmebank.util.Profiled;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

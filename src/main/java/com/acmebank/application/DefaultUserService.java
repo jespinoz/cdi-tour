@@ -2,7 +2,7 @@ package com.acmebank.application;
 
 import javax.inject.Inject;
 
-import com.acmebank.common.Audited;
+import com.acmebank.util.Audited;
 import com.acmebank.infrastructure.persistence.UserRepository;
 import com.acmebank.domain.User;
 import javax.ejb.Stateless;

@@ -4,9 +4,8 @@ import java.text.DecimalFormat;
 
 import javax.ejb.Asynchronous;
 import javax.inject.Inject;
-import javax.inject.Named;
 
-import com.acmebank.common.Audited;
+import com.acmebank.util.Audited;
 import com.acmebank.infrastructure.persistence.AccountRepository;
 import com.acmebank.domain.Account;
 import java.util.logging.Level;
@@ -16,6 +15,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class DefaultAccountService implements AccountService {
 
+    // TODO Inject from producer/properties?
     private static final DecimalFormat MONEY = new DecimalFormat("$0.00");
 
     private static final Logger logger

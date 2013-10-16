@@ -4,10 +4,9 @@
        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
            http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
     <interceptors>
-        <class>com.acmebank.common.AuditInterceptor</class>
-        <class>com.acmebank.common.ProfilingInterceptor</class>
+        <class>com.acmebank.util.AuditInterceptor</class>
     </interceptors>
     <decorators>
-        <class>com.acmebank.service.AccountServiceDecorator</class>
+        <class>com.acmebank.application.AccountServiceDecorator</class>
     </decorators>
 </beans>

@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 public class AccountJdbcResourceFactory {
 
-    @Resource(name = "jdbc/AcmeBankDB")
+    @Resource(name = "java:global/jdbc/AcmeBankDB")
     private DataSource dataSource;
 
     @Produces
