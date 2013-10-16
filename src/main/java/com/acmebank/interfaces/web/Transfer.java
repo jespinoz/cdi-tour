@@ -1,7 +1,7 @@
-package com.acmebank.web;
+package com.acmebank.interfaces.web;
 
 import com.acmebank.domain.Account;
-import com.acmebank.service.AccountService;
+import com.acmebank.application.AccountService;
 import java.io.Serializable;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -11,91 +11,79 @@ import javax.inject.Named;
 @Named
 @ConversationScoped
 public class Transfer implements Serializable {
-  private static final long serialVersionUID = 1L;
 
-  @Inject
-  private AccountService accountService;
+    private static final long serialVersionUID = 1L;
 
-  @Inject
-  private Conversation conversation;
+    @Inject
+    private AccountService accountService;
 
-  private String fromBank;
-  private String fromAccount;
-  private String toBank;
-  private String toAccount;
-  private double amount;
+    @Inject
+    private Conversation conversation;
 
-  @Inject
-  public void setAccount(@SelectedAccount Account account)
-  {
-    fromBank = "Acme Bank";
-    fromAccount = account.getNumber();
-    toBank = "Acme Bank";
-  }
+    private String fromBank;
+    private String fromAccount;
+    private String toBank;
+    private String toAccount;
+    private double amount;
 
-  public String getFromAccount()
-  {
-    return fromAccount;
-  }
+    @Inject
+    public void setAccount(@SelectedAccount Account account) {
+        fromBank = "Acme Bank";
+        fromAccount = account.getNumber();
+        toBank = "Acme Bank";
+    }
 
-  public void setFromAccount(String fromAccount)
-  {
-    this.fromAccount = fromAccount;
-  }
+    public String getFromAccount() {
+        return fromAccount;
+    }
 
-  public String getFromBank()
-  {
-    return fromBank;
-  }
+    public void setFromAccount(String fromAccount) {
+        this.fromAccount = fromAccount;
+    }
 
-  public void setFromBank(String fromBank)
-  {
-    this.fromBank = fromBank;
-  }
+    public String getFromBank() {
+        return fromBank;
+    }
 
-  public String getToAccount()
-  {
-    return toAccount;
-  }
+    public void setFromBank(String fromBank) {
+        this.fromBank = fromBank;
+    }
 
-  public void setToAccount(String toAccount)
-  {
-    this.toAccount = toAccount;
-  }
+    public String getToAccount() {
+        return toAccount;
+    }
 
-  public String getToBank()
-  {
-    return toBank;
-  }
+    public void setToAccount(String toAccount) {
+        this.toAccount = toAccount;
+    }
 
-  public void setToBank(String toBank)
-  {
-    this.toBank = toBank;
-  }
+    public String getToBank() {
+        return toBank;
+    }
 
-  public double getAmount()
-  {
-    return amount;
-  }
+    public void setToBank(String toBank) {
+        this.toBank = toBank;
+    }
 
-  public void setAmount(double amount)
-  {
-    this.amount = amount;
-  }
+    public double getAmount() {
+        return amount;
+    }
 
-  public String enterToBank()
-  {
-    conversation.begin();
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
-    return "enter_to_bank.jsf";
-  }
+    public String enterToBank() {
+        conversation.begin();
 
-  public String transfer()
-  {
-    accountService.transfer(toBank, toAccount, fromBank, fromAccount, amount);
+        return "enter_to_bank.xhtml";
+    }
 
-    conversation.end();
+    public String transfer() {
+        accountService.transfer(toBank, toAccount, fromBank, fromAccount, amount);
 
-    return "account.jsf";
-  }
+        conversation.end();
+
+        return "account.xhtml";
+    }
 }

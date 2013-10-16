@@ -1,12 +1,12 @@
-package com.acmebank.dao;
+package com.acmebank.infrastructure.persistence;
 
 import com.acmebank.domain.User;
 
-public interface UserDao {
+public interface UserRepository {
 
-	public void addUser(User user);
+    public void addUser(User user);
 
-	public User getUser(String username);
+    public User getUser(String username);
 
-	public void deleteUser(User user);
+    public void deleteUser(User user);
 }

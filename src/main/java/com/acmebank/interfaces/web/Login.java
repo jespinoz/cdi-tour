@@ -1,4 +1,4 @@
-package com.acmebank.web;
+package com.acmebank.interfaces.web;
 
 import java.io.Serializable;
 
@@ -8,34 +8,33 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.acmebank.domain.User;
-import com.acmebank.service.UserService;
+import com.acmebank.application.UserService;
 
 @Named
 @SessionScoped
 public class Login implements Serializable {
-  private static final long serialVersionUID = 1L;
 
-  @Inject
-  private Credentials credentials;
+    private static final long serialVersionUID = 1L;
 
-  @Inject
-  private UserService userService;
+    @Inject
+    private Credentials credentials;
 
-  private User user;
+    @Inject
+    private UserService userService;
 
-  public String login()
-  {
-    user = userService.getUser(credentials.getUsername());
-    // Do a password check here...
+    private User user;
 
-    return "account.jsf";
-  }
+    public String login() {
+        user = userService.getUser(credentials.getUsername());
+        // Password check here...
 
-  @Named
-  @Produces
-  @LoggedIn
-  public User getCurrentUser()
-  {
-    return user;
-  }
+        return "account.xhtml";
+    }
+
+    @Named
+    @Produces
+    @LoggedIn
+    public User getCurrentUser() {
+        return user;
+    }
 }

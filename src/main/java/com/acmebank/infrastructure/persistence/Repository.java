@@ -1,4 +1,4 @@
-package com.acmebank.dao;
+package com.acmebank.infrastructure.persistence;
 
 import com.acmebank.common.Profiled;
 import java.lang.annotation.ElementType;
@@ -13,5 +13,5 @@ import javax.enterprise.inject.Stereotype;
 @Stereotype
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Dao {
+public @interface Repository {
 }

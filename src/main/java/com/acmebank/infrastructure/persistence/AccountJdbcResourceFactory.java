@@ -1,45 +1,43 @@
-package com.acmebank.dao;
+package com.acmebank.infrastructure.persistence;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.sql.DataSource;
 
-import com.caucho.inject.TransactionScoped;
-
 public class AccountJdbcResourceFactory {
 
-	@Resource(name = "jdbc/AcmeBankDB")
-	private DataSource dataSource;
+    @Resource(name = "jdbc/AcmeBankDB")
+    private DataSource dataSource;
 
-	@Produces
-	@AccountJdbcResource
-	@TransactionScoped
-	public Connection createAccountConnection() throws SQLException {
-		return dataSource.getConnection();
-	}
+    @Produces
+    @AccountJdbcResource
+    @RequestScoped // This would be transaction scoped in Java EE 7
+    public Connection createAccountConnection() throws SQLException {
+        return dataSource.getConnection();
+    }
 
-	public void closeAccountConnection(
-			@Disposes @AccountJdbcResource Connection connection)
-			throws SQLException {
-		connection.close();
-	}
+    public void closeAccountConnection(
+            @Disposes @AccountJdbcResource Connection connection)
+            throws SQLException {
+        connection.close();
+    }
 
-	@Produces
-	@AccountJdbcResource
-	@TransactionScoped
-	public Statement createAccountStatement(
-			@AccountJdbcResource Connection connection) throws SQLException {
-		return connection.createStatement();
-	}
+    @Produces
+    @AccountJdbcResource
+    @RequestScoped // This would be transaction scoped in Java EE 7
+    public Statement createAccountStatement(
+            @AccountJdbcResource Connection connection) throws SQLException {
+        return connection.createStatement();
+    }
 
-	public void closeAccountStatement(
-			@Disposes @AccountJdbcResource Statement statement)
-			throws SQLException {
-		statement.close();
-	}
+    public void closeAccountStatement(
+            @Disposes @AccountJdbcResource Statement statement)
+            throws SQLException {
+        statement.close();
+    }
 }

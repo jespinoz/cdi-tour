@@ -1,4 +1,4 @@
-package com.acmebank.service;
+package com.acmebank.application;
 
 import com.acmebank.domain.Account;
 

@@ -1,93 +1,88 @@
-package com.acmebank.web;
-
-import java.io.IOException;
-import java.io.PrintWriter;
+package com.acmebank.interfaces.web;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.acmebank.domain.Account;
 import com.acmebank.domain.User;
-import com.acmebank.service.AccountService;
-import com.acmebank.service.UserService;
+import com.acmebank.application.AccountService;
+import com.acmebank.application.UserService;
+import java.util.logging.Logger;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
-@WebServlet(name = "DataPopulatorServlet", urlPatterns = { "/populate" })
-public class DataPopulationServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@WebListener
+public class DataPopulator implements ServletContextListener {
 
-	@Inject
-	private UserService userService;
+    private static final long serialVersionUID = 1L;
+    private static final Logger logger = Logger.getLogger(
+            DataPopulator.class.getName());
 
-	@Inject
-	private AccountService accountService;
+    @Inject
+    private UserService userService;
 
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+    @Inject
+    private AccountService accountService;
 
-		try {
-			out.println("Populating application data...");
+    public void contextInitialized(ServletContextEvent sce) {
+        logger.info("Populating application data...");
 
-			User user = userService.getUser("nrahman");
+        User user = userService.getUser("nrahman");
 
-			if (user != null) {
-				out.println("Resetting user 1...");
+        if (user != null) {
+            logger.info("Resetting user 1...");
 
-				Account account = accountService.getAccount(user.getUsername());
+            Account account = accountService.getAccount(user.getUsername());
 
-				accountService.deleteAccount(account);
-				userService.deleteUser(user);
-			}
+            accountService.deleteAccount(account);
+            userService.deleteUser(user);
+        }
 
-			user = userService.getUser("rrahman");
+        user = userService.getUser("rrahman");
 
-			if (user != null) {
-				out.println("Resetting user 2...");
+        if (user != null) {
+            logger.info("Resetting user 2...");
 
-				Account account = accountService.getAccount(user.getUsername());
+            Account account = accountService.getAccount(user.getUsername());
 
-				accountService.deleteAccount(account);
-				userService.deleteUser(user);
-			}
+            accountService.deleteAccount(account);
+            userService.deleteUser(user);
+        }
 
-			user = new User();
-			user.setUsername("nrahman");
-			user.setFirstName("Nicole");
-			user.setLastName("Rahman");
-			user.setPassword("secret1");
+        user = new User();
+        user.setUsername("nrahman");
+        user.setFirstName("Nicole");
+        user.setLastName("Rahman");
+        user.setPassword("secret1");
 
-			userService.addUser(user);
+        userService.addUser(user);
 
-			Account account = new Account();
-			account.setNumber("1111AAA");
-			account.setCustomer(user.getUsername());
-			account.setBalance(40000);
+        Account account = new Account();
+        account.setNumber("1111AAA");
+        account.setCustomer(user.getUsername());
+        account.setBalance(40000);
 
-			accountService.addAccount(account);
+        accountService.addAccount(account);
 
-			user = new User();
-			user.setUsername("rrahman");
-			user.setFirstName("Reza");
-			user.setLastName("Rahman");
-			user.setPassword("secret2");
+        user = new User();
+        user.setUsername("rrahman");
+        user.setFirstName("Reza");
+        user.setLastName("Rahman");
+        user.setPassword("secret2");
 
-			userService.addUser(user);
+        userService.addUser(user);
 
-			account = new Account();
-			account.setNumber("2222BBB");
-			account.setCustomer(user.getUsername());
-			account.setBalance(25000);
+        account = new Account();
+        account.setNumber("2222BBB");
+        account.setCustomer(user.getUsername());
+        account.setBalance(25000);
 
-			accountService.addAccount(account);
+        accountService.addAccount(account);
 
-			out.println("Done!");
-		} finally {
-			out.close();
-		}
-	}
+        logger.info("Done!");
+    }
+
+    public void contextDestroyed(ServletContextEvent sce) {
+        // Nothing to do.
+    }
 }

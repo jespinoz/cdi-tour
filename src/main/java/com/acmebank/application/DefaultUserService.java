@@ -1,34 +1,31 @@
-package com.acmebank.service;
+package com.acmebank.application;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.acmebank.common.Audited;
-import com.acmebank.dao.UserDao;
+import com.acmebank.infrastructure.persistence.UserRepository;
 import com.acmebank.domain.User;
+import javax.ejb.Stateless;
 
-@ApplicationScoped
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Stateless
 public class DefaultUserService implements UserService {
 
-	@Inject
-	private UserDao userDao;
+    @Inject
+    private UserRepository userRepository;
 
-	@Audited
-	@Override
-	public void addUser(User user) {
-		userDao.addUser(user);
-	}
+    @Audited
+    @Override
+    public void addUser(User user) {
+        userRepository.addUser(user);
+    }
 
-	@Override
-	public User getUser(String username) {
-		return userDao.getUser(username);
-	}
+    @Override
+    public User getUser(String username) {
+        return userRepository.getUser(username);
+    }
 
-	@Override
-	public void deleteUser(User user) {
-		userDao.deleteUser(user);
-	}
+    @Override
+    public void deleteUser(User user) {
+        userRepository.deleteUser(user);
+    }
 }

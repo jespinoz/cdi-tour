@@ -1,4 +1,4 @@
-package com.acmebank.dao;
+package com.acmebank.infrastructure.persistence;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

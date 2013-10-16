@@ -1,8 +1,8 @@
-package com.acmebank.dao;
+package com.acmebank.infrastructure.persistence;
 
 import com.acmebank.domain.Account;
 
-public interface AccountDao {
+public interface AccountRepository {
 
     public void addAccount(Account account);
 

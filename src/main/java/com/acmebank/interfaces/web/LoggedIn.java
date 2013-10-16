@@ -1,4 +1,4 @@
-package com.acmebank.web;
+package com.acmebank.interfaces.web;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

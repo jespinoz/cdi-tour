@@ -1,5 +1,7 @@
 package com.acmebank.common;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -8,18 +10,20 @@ import javax.interceptor.InvocationContext;
 @Profiled
 public class ProfilingInterceptor {
 
-  @AroundInvoke
-  public Object profile(InvocationContext context) throws Exception
-  {
-    Object value;
+    private static final Logger logger
+            = Logger.getLogger(ProfilingInterceptor.class.getName());
 
-    long start = System.currentTimeMillis();
-    value = context.proceed();
-    long end = System.currentTimeMillis();
+    @AroundInvoke
+    public Object profile(InvocationContext context) throws Exception {
+        Object value;
 
-    System.out.println("Execution time for: " + context.getMethod().getName()
-        + " was: " + (end - start) + " milliseconds");
+        long start = System.currentTimeMillis();
+        value = context.proceed();
+        long end = System.currentTimeMillis();
 
-    return value;
-  }
+        logger.log(Level.INFO, "Execution time for: {0} was: {1} milliseconds",
+                new Object[]{context.getMethod().getName(), (end - start)});
+
+        return value;
+    }
 }

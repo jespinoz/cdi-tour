@@ -1,16 +1,18 @@
-package com.acmebank.service;
+package com.acmebank.application;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Schedule;
-import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 
-@ApplicationScoped
-@Startup
+@Stateless
 public class StatementGenerator {
 
-  @Schedule(second = "*/30", minute = "*", hour = "*")
-  public void generateMonthlyStatements()
-  {
-    System.out.println("Generating monthly statements...");
-  }
+    private static final Logger logger = Logger.getLogger(
+            StatementGenerator.class.getName());
+
+    @Schedule(second = "*/30", minute = "*", hour = "*")
+    public void generateMonthlyStatements() {
+        logger.log(Level.INFO, "Generating monthly statements...");
+    }
 }

@@ -1,4 +1,4 @@
-package com.acmebank.dao;
+package com.acmebank.infrastructure.persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,66 +8,66 @@ import javax.inject.Inject;
 
 import com.acmebank.domain.User;
 
-@Dao
+@Repository
 @LegacyImplementation
-public class JdbcUserDao implements UserDao {
+public class JdbcUserRepository implements UserRepository {
 
-	@Inject
-	@AccountJdbcResource
-	private Statement statement;
+    @Inject
+    @AccountJdbcResource
+    private Statement statement;
 
-	@Override
-	public void addUser(User user) {
-		try {
-			statement
-					.executeUpdate("INSERT INTO users (id, username, first_name, last_name, password) VALUES ("
-							+ user.getId()
-							+ ", '"
-							+ user.getUsername()
-							+ "', '"
-							+ user.getFirstName()
-							+ "', '"
-							+ user.getLastName()
-							+ "', '"
-							+ user.getPassword()
-							+ "')");
-		} catch (SQLException e) {
-			throw new RuntimeException("Data access error.", e);
-		}
-	}
+    @Override
+    public void addUser(User user) {
+        try {
+            statement.executeUpdate(
+                    "INSERT INTO users (id, username, first_name, last_name, password) VALUES ("
+                    + user.getId()
+                    + ", '"
+                    + user.getUsername()
+                    + "', '"
+                    + user.getFirstName()
+                    + "', '"
+                    + user.getLastName()
+                    + "', '"
+                    + user.getPassword()
+                    + "')");
+        } catch (SQLException e) {
+            throw new RuntimeException("Data access error.", e);
+        }
+    }
 
-	@Override
-	public User getUser(String username) {
-		User user = null;
+    @Override
+    public User getUser(String username) {
+        User user = null;
 
-		try {
-			ResultSet resultSet = statement
-					.executeQuery("SELECT id, username, first_name, last_name, password FROM users WHERE username='"
-							+ username + "'");
+        try {
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT id, username, first_name, last_name, password FROM users WHERE username='"
+                    + username + "'");
 
-			if (resultSet.next()) {
-				user = new User();
+            if (resultSet.next()) {
+                user = new User();
 
-				user.setId(resultSet.getInt("id"));
-				user.setUsername(resultSet.getString("username"));
-				user.setFirstName(resultSet.getString("first_name"));
-				user.setLastName(resultSet.getString("last_name"));
-				user.setPassword(resultSet.getString("password"));
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException("Data access error.", e);
-		}
+                user.setId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setFirstName(resultSet.getString("first_name"));
+                user.setLastName(resultSet.getString("last_name"));
+                user.setPassword(resultSet.getString("password"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Data access error.", e);
+        }
 
-		return user;
-	}
+        return user;
+    }
 
-	@Override
-	public void deleteUser(User user) {
-		try {
-			statement.executeUpdate("DELETE FROM users WHERE id = "
-					+ user.getId());
-		} catch (SQLException e) {
-			throw new RuntimeException("Data access error.", e);
-		}
-	}
+    @Override
+    public void deleteUser(User user) {
+        try {
+            statement.executeUpdate("DELETE FROM users WHERE id = "
+                    + user.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException("Data access error.", e);
+        }
+    }
 }

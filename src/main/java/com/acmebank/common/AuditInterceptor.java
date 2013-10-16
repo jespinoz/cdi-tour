@@ -1,6 +1,8 @@
 package com.acmebank.common;
 
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -10,13 +12,15 @@ import javax.interceptor.InvocationContext;
 @Audited
 public class AuditInterceptor {
 
-  @AroundInvoke
-  public Object audit(InvocationContext context) throws Exception
-  {
-    System.out.print("Executing: " + context.getMethod().getName());
-    System.out.println(" with args: "
-        + Arrays.toString(context.getParameters()));
+    private static final Logger logger
+            = Logger.getLogger(AuditInterceptor.class.getName());
 
-    return context.proceed();
-  }
+    @AroundInvoke
+    public Object audit(InvocationContext context) throws Exception {
+        logger.log(Level.INFO, "Executing: {0} with args: {1}",
+                new Object[]{context.getMethod().getName(),
+                    Arrays.toString(context.getParameters())});
+
+        return context.proceed();
+    }
 }

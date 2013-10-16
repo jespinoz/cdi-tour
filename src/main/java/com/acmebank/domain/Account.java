@@ -10,58 +10,50 @@ import javax.persistence.Table;
 @Table(name = "ACCOUNTS")
 public class Account implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-  @Id
-  @GeneratedValue
-  private long id;
-  private String number;
-  private double balance;
-  private String customer;
+    private static final long serialVersionUID = 1L;
 
-  public long getId()
-  {
-    return id;
-  }
+    @Id
+    @GeneratedValue
+    private long id;
+    private String number;
+    private double balance;
+    private String customer;
 
-  public void setId(long id)
-  {
-    this.id = id;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public String getNumber()
-  {
-    return number;
-  }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-  public void setNumber(String number)
-  {
-    this.number = number;
-  }
+    public String getNumber() {
+        return number;
+    }
 
-  public double getBalance()
-  {
-    return balance;
-  }
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
-  public void setBalance(double balance)
-  {
-    this.balance = balance;
-  }
+    public double getBalance() {
+        return balance;
+    }
 
-  public String getCustomer()
-  {
-    return customer;
-  }
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
-  public void setCustomer(String customer)
-  {
-    this.customer = customer;
-  }
+    public String getCustomer() {
+        return customer;
+    }
 
-  @Override
-  public String toString()
-  {
-    return "[Account[id=" + id + "][number=" + number + "][customer="
-        + customer + "][balance=" + balance + "]]";
-  }
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
+
+    @Override
+    public String toString() {
+        return "[Account[id=" + id + "][number=" + number + "][customer="
+                + customer + "][balance=" + balance + "]]";
+    }
 }
