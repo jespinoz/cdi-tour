@@ -1,20 +1,64 @@
-package com.acmebank.test;
+package com.acmebank.application;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
 
 import com.acmebank.domain.Account;
-import com.acmebank.application.AccountService;
+import com.acmebank.infrastructure.persistence.AccountRepository;
+import com.acmebank.infrastructure.persistence.DefaultAccountRepository;
+import com.acmebank.infrastructure.persistence.Repository;
+import com.acmebank.util.AuditInterceptor;
+import com.acmebank.util.Audited;
+import com.acmebank.util.Profiled;
+import com.acmebank.util.ProfilingInterceptor;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-//@RunWith(ResinBeanContainerRunner.class)
-//@ResinBeanConfiguration(beansXml = { "classpath:beans-test.xml" })
+@RunWith(Arquillian.class)
 public class AccountServiceTest {
 
     @Inject
     private AccountService accountService;
 
-    // @Test
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Deployment
+    public static WebArchive createDeployment() {
+        return ShrinkWrap
+                .create(WebArchive.class, "acme-bank-test.war")
+                // Application layer components directly under test.
+                .addClass(AccountService.class)
+                .addClass(DefaultAccountService.class)
+                .addClass(AccountServiceDecorator.class)
+                // Domain layer components.
+                .addClass(Account.class)
+                // Persistence layer components.
+                .addClass(Repository.class)
+                .addClass(AccountRepository.class)
+                .addClass(DefaultAccountRepository.class)
+                // Utilities.
+                .addClass(Audited.class)
+                .addClass(AuditInterceptor.class)
+                .addClass(Profiled.class)
+                .addClass(ProfilingInterceptor.class)
+                .addAsResource("META-INF/persistence.xml",
+                        "META-INF/persistence.xml")
+                .addAsWebInfResource("test-beans.xml", "beans.xml");
+    }
+
+    @Test
+    @InSequence(1)
     public void testAddAccount() {
         Account account = new Account();
         account.setNumber("1111");
@@ -22,22 +66,51 @@ public class AccountServiceTest {
         account.setBalance(1000.00);
 
         accountService.addAccount(account);
+
+        Query query = entityManager
+                .createQuery("SELECT a FROM Account a WHERE a.customer = :customer");
+        query.setParameter("customer", "nrahman");
+
+        account = (Account) query.getSingleResult();
+
+        assertEquals("1111", account.getNumber());
+        assertEquals("nrahman", account.getCustomer());
+        assertEquals(new Double(1000.00), new Double(account.getBalance()));
     }
 
-    // @Test
+    @Test
+    @InSequence(2)
     public void testGetAccount() {
         Account account = accountService.getAccount("nrahman");
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         assertNotNull(account);
+        assertEquals("1111", account.getNumber());
+        assertEquals("nrahman", account.getCustomer());
+        assertEquals(new Double(1000.00), new Double(account.getBalance()));
     }
 
-    // @Test
+    @Test
+    @InSequence(3)
     public void testUpdateAccount() {
         Account account = accountService.getAccount("nrahman");
         account.setBalance(1001.50);
         accountService.updateAccount(account);
     }
 
-    // @Test
+    @Test
+    @InSequence(4)
     public void testDeleteAccount() {
         Account account = accountService.getAccount("nrahman");
         accountService.deleteAccount(account);
