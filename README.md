@@ -1,5 +1,5 @@
 Contexts and Dependency Injection for Java EE (CDI) Magical Mystery Tour Demo Code
-
+==================================================================================
 The code was run against WebLogic 12c, but should work on any Java EE 6 compatible
 container. 
 
