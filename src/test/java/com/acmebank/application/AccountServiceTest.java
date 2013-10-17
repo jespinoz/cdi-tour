@@ -1,10 +1,5 @@
 package com.acmebank.application;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-
-import javax.inject.Inject;
-
 import com.acmebank.domain.Account;
 import com.acmebank.infrastructure.persistence.AccountRepository;
 import com.acmebank.infrastructure.persistence.DefaultAccountRepository;
@@ -13,6 +8,7 @@ import com.acmebank.util.AuditInterceptor;
 import com.acmebank.util.Audited;
 import com.acmebank.util.Profiled;
 import com.acmebank.util.ProfilingInterceptor;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -21,6 +17,9 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,7 +69,6 @@ public class AccountServiceTest {
         Query query = entityManager
                 .createQuery("SELECT a FROM Account a WHERE a.customer = :customer");
         query.setParameter("customer", "nrahman");
-
         account = (Account) query.getSingleResult();
 
         assertEquals("1111", account.getNumber());
@@ -83,18 +81,6 @@ public class AccountServiceTest {
     public void testGetAccount() {
         Account account = accountService.getAccount("nrahman");
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         assertNotNull(account);
         assertEquals("1111", account.getNumber());
         assertEquals("nrahman", account.getCustomer());
@@ -107,6 +93,15 @@ public class AccountServiceTest {
         Account account = accountService.getAccount("nrahman");
         account.setBalance(1001.50);
         accountService.updateAccount(account);
+
+        Query query = entityManager
+                .createQuery("SELECT a FROM Account a WHERE a.customer = :customer");
+        query.setParameter("customer", "nrahman");
+        account = (Account) query.getSingleResult();
+
+        assertEquals("1111", account.getNumber());
+        assertEquals("nrahman", account.getCustomer());
+        assertEquals(new Double(1001.50), new Double(account.getBalance()));
     }
 
     @Test
@@ -114,5 +109,11 @@ public class AccountServiceTest {
     public void testDeleteAccount() {
         Account account = accountService.getAccount("nrahman");
         accountService.deleteAccount(account);
+
+        Query query = entityManager
+                .createQuery("SELECT a FROM Account a WHERE a.customer = :customer");
+        query.setParameter("customer", "nrahman");
+
+        assertTrue(query.getResultList().isEmpty());
     }
 }
